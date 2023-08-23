@@ -3,7 +3,6 @@ import pandas
 from random import choice
 
 BACKGROUND_COLOR = "#B1DDC6"
-cur_card = {}
 to_learn = {}
 
 try:
@@ -17,6 +16,7 @@ else:
 
 def next_card():
     global cur_card, flip_timer
+    cur_card = {}
     window.after_cancel(flip_timer)
     cur_card.update(choice(to_learn))
     canvas.itemconfig(card_title, text="English", fill='black')
