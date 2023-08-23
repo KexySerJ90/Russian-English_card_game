@@ -1,13 +1,18 @@
-from tkinter import *
+from tkinter import Tk,Canvas,PhotoImage, Button
 import pandas
 from random import choice
 BACKGROUND_COLOR = "#B1DDC6"
-
-
-
-data=pandas.read_csv('data/russian_english_adjectives.csv')
-to_learn=data.to_dict(orient="records")
 cur_card={}
+to_learn={}
+
+try:
+    data=pandas.read_csv('data/words_to_learn.csv')
+except FileNotFoundError:
+    original_data=pandas.read_csv('data/russian_english_adjectives.csv')
+    to_learn = original_data.to_dict(orient="records")
+else:
+    to_learn=data.to_dict(orient="records")
+
 
 def next_card():
     global cur_card, flip_timer
@@ -22,6 +27,12 @@ def flip_card():
     canvas.itemconfig(card_title, text="Russian",fill='white')
     canvas.itemconfig(card_word, text=cur_card["Russian"],fill='white')
     canvas.itemconfig(canvas_image, image=card_back_img)
+
+def is_known():
+    to_learn.remove(cur_card)
+    data=pandas.DataFrame(to_learn)
+    data.to_csv('data/words_to_learn.csv',index=False)
+    next_card()
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title('Flash card')
@@ -37,8 +48,8 @@ card_word=canvas.create_text(400, 263, text='', fill='black',font=('Ariel', 60, 
 canvas.config(bg=BACKGROUND_COLOR,highlightthickness=0)
 canvas.grid(column=0, row=0,columnspan=2)
 ri=PhotoImage(file='images/right.png')
-right_button = Button(image=ri, highlightthickness=0,borderwidth=0, command=next_card)
-right_button.grid(column=1, row=1)
+wright_button = Button(image=ri, highlightthickness=0,borderwidth=0, command=is_known)
+wright_button.grid(column=1, row=1)
 wi=PhotoImage(file='images/wrong.png')
 wrong_button = Button(image=wi, highlightthickness=0,borderwidth=0, command=next_card)
 wrong_button.grid(column=0, row=1)
