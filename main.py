@@ -8,13 +8,13 @@ window = Tk()
 window.title('Flash card')
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 
-data=pandas.read_csv('data/french_words.csv')
+data=pandas.read_csv('data/russian_english_adjectives.csv')
 to_learn=data.to_dict(orient="records")
 
 def next_card():
     cur_card=choice(to_learn)
-    canvas.itemconfig(card_title,text="French")
-    canvas.itemconfig(card_word,text=cur_card["French"])
+    canvas.itemconfig(card_title,text="English")
+    canvas.itemconfig(card_word,text=cur_card["English"])
 
 # ---------------------------- UI SETUP ------------------------------- #
 
